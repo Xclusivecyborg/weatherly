@@ -1,0 +1,10 @@
+const String baseUrl = 'https://api.openweathermap.org/data/2.5';
+const String apiKey = 'dd3adb8bea0197d6091ba462e419194c';
+const String nextForecast = 'Next forecast';
+const String fiveDays = 'Five days';
+const String forecastReport = 'Forecast report';
+const String yourNotifications = 'Your notifications';
+const String location = 'Change location';
+const String cityName = 'Type city name';
+const String today = 'Today';
+const String noData = 'No data';
