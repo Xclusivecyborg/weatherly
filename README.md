@@ -15,3 +15,4 @@ You also get notifications based on the current weather in your area and you als
 ![notifications](https://user-images.githubusercontent.com/80969540/147778855-dd0c173b-a988-4a90-881d-8a739934386f.png)
 ![search](https://user-images.githubusercontent.com/80969540/147778862-d0138adc-faf6-4200-b18e-e53b04a43c24.png)
 ![farenheit](https://user-images.githubusercontent.com/80969540/147778867-d70496a2-f228-44c1-ab3c-d2a18f3227b2.png)
+![celsius](https://user-images.githubusercontent.com/80969540/147779057-f0b9fe42-bfb9-4757-975d-0271aa8f5ee6.png)
