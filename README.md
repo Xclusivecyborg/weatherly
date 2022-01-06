@@ -1,10 +1,13 @@
 # Weatherly
 
+To run the app, kindldy fork/clone to your machine. 
 
+#About
 This is a weather app that fetches data from the openweathrmap API. 
 # It is built using flutter and Stacked architecture for state management
 #
-To run the app, kindldy fork/clone to your machine. 
+
+
 It gives you the flexibility of getting weather for your current location and any city of your choice.
 You also get notifications based on the current weather in your area and you also get the weather forecast for five hours and five days  into the future.
 
