@@ -1,7 +1,7 @@
 import 'package:dio/dio.dart';
 import 'package:weather_forecast/app/app.logger.dart';
-
 import 'package:weather_forecast/models/get_location_model.dart';
+import 'package:weather_forecast/models/get_weather_daily.dart';
 import 'package:weather_forecast/models/notifications_model.dart';
 import 'package:weather_forecast/widgets/custom_toast.dart';
 
@@ -17,9 +17,7 @@ class Network {
     return _instance!;
   }
 
-
-
- Future<LocationWeather?> getCityWeather({required String url}) async {
+  Future<LocationWeather?> getCityWeather({required String url}) async {
     try {
       var response = await _dio!.get(url);
       if (response.statusCode == 200) {
@@ -34,7 +32,6 @@ class Network {
       }
     }
   }
-
 
   Future<List<dynamic>?> getHourData({required String url}) async {
     try {
@@ -52,12 +49,12 @@ class Network {
     }
   }
 
-
-  Future<List<dynamic>?> getDailyData({required String url}) async {
+  Future<List<Daily>?> getDailyData({required String url}) async {
     try {
       var response = await _dio!.get(url);
       if (response.statusCode == 200) {
-        return response.data["daily"];
+        final List data = response.data["daily"];
+        return data.map((e) => Daily.fromJson(e)).toList();
       }
     } on DioError catch (e) {
       if (e.type == DioErrorType.other) {
@@ -68,8 +65,6 @@ class Network {
       }
     }
   }
-
- 
 
   Future<Notification?> getNotifications({required String url}) async {
     try {

@@ -10,6 +10,7 @@ import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
+import '../services/get_current_location.dart';
 import '../services/network.dart';
 
 final locator = StackedLocator.instance;
@@ -22,6 +23,7 @@ Future setupLocator(
 
 // Register dependencies
   locator.registerLazySingleton(() => NavigationService());
+  locator.registerLazySingleton(() => Location());
   final network = await Network.getInstance();
   locator.registerSingleton(network);
 }

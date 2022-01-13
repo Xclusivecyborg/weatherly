@@ -120,7 +120,9 @@ class WeatherPage extends StatelessWidget {
                             separatorBuilder: (context, index) =>
                                 const Divider(),
                             shrinkWrap: true,
-                            itemCount: 5,
+                            itemCount: model.notifications!.length
+
+                            ,
                             itemBuilder: (context, index) {
                               if (model.notifications!.isEmpty) {
                                 String icon = '';

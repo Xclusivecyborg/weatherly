@@ -2,17 +2,17 @@ class Daily {
   Daily({
     this.condition,
     this.dt,
-    this.temp,
+    required this.temp,
    
   });
   int? dt;
-  double? temp;
+  String temp;
   
   int? condition;
 
   factory Daily.fromJson(Map<String, dynamic> json) => Daily(
       dt: json['dt'],
-      temp: json["temp"]["day"],
+      temp: json["temp"]["day"].toString(),
       
       condition: json["weather"][0]["id"],);
 

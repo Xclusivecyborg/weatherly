@@ -10,11 +10,11 @@ import 'package:weather_forecast/services/get_current_location.dart';
 import 'package:weather_forecast/services/network.dart';
 import 'package:weather_forecast/utils/app_strings.dart';
 
-class WeatherPageViewmodel extends FormViewModel{
+class WeatherPageViewmodel extends FormViewModel {
   final log = getLogger('Location Weather');
 
   ///REGISTERED SERVICES
-  Location location = Location();
+  final location = locator<Location>();
   final _navigation = locator<NavigationService>();
   final _api = locator<Network>();
 
@@ -63,7 +63,7 @@ class WeatherPageViewmodel extends FormViewModel{
   }
 
   ///METHODS THAT GETS WEATHER DATA FROM THE API
-  ///Method to get weather by the city typed in by the user in celsius
+  /// =======> Method to get weather for the city typed in by the user in celsius <=======
   Future getWeatherbyCityCelsius({required String name}) async {
     String url = '$baseUrl/weather?q=$name&appid=$apiKey&units=metric';
     await _api.getCityWeather(url: url).then((value) {
@@ -78,7 +78,7 @@ class WeatherPageViewmodel extends FormViewModel{
     notifyListeners();
   }
 
-  ///Method to get weather by the city typed in by the user in farenheit
+  ///=======> Method to get weather for the city typed in by the user in farenheit <=======
   ///
   Future getWeatherbyCityFarenheit({required String name}) async {
     String url = '$baseUrl/weather?q=$name&appid=$apiKey&units=imperial';
@@ -94,20 +94,18 @@ class WeatherPageViewmodel extends FormViewModel{
     notifyListeners();
   }
 
-///Method to get daily weather for 5 days
-///
+  ///=======> Method to get daily weather for 5 days <=======
+  ///
   Future getWeatherDaily() async {
     await location.getCurrentLocation();
     String url =
         '$baseUrl/onecall?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric';
-    await _api.getDailyData(url: url).then((value) {
-      datasnapshot = value!.map((e) => Daily.fromJson(e)).toList();
-    });
-    log.i(datasnapshot);
+     datasnapshot = await _api.getDailyData(url: url);
+        log.i(datasnapshot);
     notifyListeners();
   }
 
-  ///Method to get weather forecast for 5 hours
+  /// =======> Method to get weather forecast for 5 hours <=======
   ///
   Future getWeather5Hours() async {
     await location.getCurrentLocation();
@@ -143,8 +141,8 @@ class WeatherPageViewmodel extends FormViewModel{
     notifyListeners();
   }
 
-///Method to get weather in farenheit
-///
+  ///Method to get weather in farenheit
+  ///
   Future getWeatherFarenheit() async {
     await location.getCurrentLocation();
     String url =
@@ -160,8 +158,8 @@ class WeatherPageViewmodel extends FormViewModel{
     notifyListeners();
   }
 
-///Method to get weather in Celcius
-///
+  ///Method to get weather in Celcius
+  ///
   Future getWeatherCelcius() async {
     await location.getCurrentLocation();
     String url =
@@ -178,8 +176,8 @@ class WeatherPageViewmodel extends FormViewModel{
     notifyListeners();
   }
 
-///Method to get weather notifications
-///
+  ///Method to get weather notifications
+  ///
   Future getNotificationsfor5days() async {
     int timestamp = DateTime.now().millisecondsSinceEpoch ~/ 1000;
     await location.getCurrentLocation();
@@ -195,7 +193,7 @@ class WeatherPageViewmodel extends FormViewModel{
   }
 
 ////NAVIGATION METHODS
-///Navigate to page to get weather by city
+  ///Navigate to page to get weather by city
   void navigateToCity() {
     _navigation.navigateTo(Routes.forecastReport);
   }
@@ -227,8 +225,8 @@ class WeatherPageViewmodel extends FormViewModel{
     }
   }
 
-///Method to get the icon that will be shown in both the notification view
-///and the current user location view
+  ///Method to get the icon that will be shown in both the notification view
+  ///and the current user location view
   String getWeatherIcon(int cond) {
     if (cond < 300) {
       return '🌩';
@@ -250,7 +248,5 @@ class WeatherPageViewmodel extends FormViewModel{
   }
 
   @override
-  void setFormStatus() {
-    // : implement setFormStatus
-  }
+  void setFormStatus() {}
 }

@@ -4,12 +4,12 @@
 // StackedFormGenerator
 // **************************************************************************
 
-// ignore_for_file: public_member_api_docs, constant_identifier_names
+// ignore_for_file: public_member_api_docs
 
 import 'package:flutter/material.dart';
 import 'package:stacked/stacked.dart';
 
-const String SearchValueKey = 'search';
+const String searchValueKey = 'search';
 
 mixin $ForecastReport on StatelessWidget {
   final TextEditingController searchController = TextEditingController();
@@ -25,7 +25,7 @@ mixin $ForecastReport on StatelessWidget {
   void _updateFormData(FormViewModel model) => model.setData(
         model.formValueMap
           ..addAll({
-            SearchValueKey: searchController.text,
+            searchValueKey: searchController.text,
           }),
       );
 
@@ -39,9 +39,9 @@ mixin $ForecastReport on StatelessWidget {
 }
 
 extension ValueProperties on FormViewModel {
-  String? get searchValue => formValueMap[SearchValueKey];
+  String? get searchValue => formValueMap[searchValueKey];
 
-  bool get hasSearch => formValueMap.containsKey(SearchValueKey);
+  bool get hasSearch => formValueMap.containsKey(searchValueKey);
 }
 
 extension Methods on FormViewModel {}

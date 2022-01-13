@@ -37,10 +37,23 @@ class StackedRouter extends RouterBase {
       );
     },
     ForecastReport: (data) {
+      var args = data.getArgs<ForecastReportArguments>(
+        orElse: () => ForecastReportArguments(),
+      );
       return CupertinoPageRoute<dynamic>(
-        builder: (context) =>  ForecastReport(),
+        builder: (context) => ForecastReport(key: args.key),
         settings: data,
       );
     },
   };
+}
+
+/// ************************************************************************
+/// Arguments holder classes
+/// *************************************************************************
+
+/// ForecastReport arguments holder class
+class ForecastReportArguments {
+  final Key? key;
+  ForecastReportArguments({this.key});
 }

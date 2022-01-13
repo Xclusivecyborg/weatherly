@@ -129,7 +129,7 @@ class ForecastBottomSheet extends StatelessWidget {
                 String date = DateFormat('MMMM d').format(
                     DateTime.fromMillisecondsSinceEpoch(
                         datasnapshot[index].dt! * 1000));
-                        int temp = datasnapshot[index].temp!.toInt();
+                String temp = datasnapshot[index].temp.substring(0, 2);
                 return BoxColumn(
                   icon: icon,
                   date: date,
