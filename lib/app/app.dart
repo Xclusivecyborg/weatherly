@@ -1,6 +1,5 @@
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:weather_forecast/services/get_current_location.dart';
 import 'package:weather_forecast/services/network.dart';
 import 'package:weather_forecast/views/location_view/location_view.dart';
 
@@ -12,9 +11,10 @@ import 'package:weather_forecast/views/weather/weather_page.dart';
     CupertinoRoute(page: ForecastReport),
   ],
   dependencies: [
-    LazySingleton(classType: NavigationService),
-    LazySingleton(classType: Location),
-    Presolve(classType: Network, presolveUsing: Network.getInstance),
+    LazySingleton(
+      classType: NavigationService,
+    ),
+    LazySingleton(classType: Network),
   ],
   logger: StackedLogger(),
 )

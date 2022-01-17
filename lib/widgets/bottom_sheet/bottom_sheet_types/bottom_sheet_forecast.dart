@@ -2,6 +2,7 @@ import 'package:flutter/material.dart' hide Notification;
 import 'package:google_fonts/google_fonts.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_forecast/models/get_weather_daily.dart';
+import 'package:weather_forecast/models/get_weather_hourly.dart';
 import 'package:weather_forecast/models/notifications_model.dart';
 import 'package:weather_forecast/utils/app_colors.dart';
 import 'package:weather_forecast/utils/app_strings.dart';
@@ -11,7 +12,7 @@ import 'package:weather_forecast/widgets/bottom_sheet/bottom_sheet_widgets/botto
 import 'package:weather_forecast/widgets/bottom_sheet/bottom_sheet_widgets/bottom_sheet_row.dart';
 
 class ForecastBottomSheet extends StatelessWidget {
-  final List<dynamic> hoursnapshot;
+  final List<Hourly> hoursnapshot;
   final List<Daily> datasnapshot;
   final List<Notification>? notification;
   final String Function(int) getIcon;
@@ -68,11 +69,11 @@ class ForecastBottomSheet extends StatelessWidget {
                 } else {
                   String time = DateFormat('h a')
                       .format(DateTime.fromMillisecondsSinceEpoch(
-                          hoursnapshot[index]['dt'] * 1000))
+                          hoursnapshot[index].dt! * 1000))
                       .toLowerCase();
                   String icon =
-                      getIcon(hoursnapshot[index]['weather'][0]["id"]);
-                  int temp = hoursnapshot[index]['temp'].toInt();
+                      getIcon(hoursnapshot[index].condition!);
+                  String temp = hoursnapshot[index].temp!.substring(0,2);
                   return BoxRow(
                     icon: icon,
                     daytemp: '$temp°c',
@@ -129,7 +130,7 @@ class ForecastBottomSheet extends StatelessWidget {
                 String date = DateFormat('MMMM d').format(
                     DateTime.fromMillisecondsSinceEpoch(
                         datasnapshot[index].dt! * 1000));
-                String temp = datasnapshot[index].temp.substring(0, 2);
+                String temp = datasnapshot[index].temp!.substring(0, 2);
                 return BoxColumn(
                   icon: icon,
                   date: date,

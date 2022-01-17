@@ -6,24 +6,21 @@
 
 // ignore_for_file: public_member_api_docs
 
+import 'package:dio/dio.dart';
 import 'package:stacked/stacked.dart';
 import 'package:stacked/stacked_annotations.dart';
 import 'package:stacked_services/stacked_services.dart';
 
-import '../services/get_current_location.dart';
 import '../services/network.dart';
 
 final locator = StackedLocator.instance;
 
-Future setupLocator(
-    {String? environment, EnvironmentFilter? environmentFilter}) async {
+void setupLocator({String? environment, EnvironmentFilter? environmentFilter}) {
 // Register environments
   locator.registerEnvironment(
       environment: environment, environmentFilter: environmentFilter);
 
 // Register dependencies
   locator.registerLazySingleton(() => NavigationService());
-  locator.registerLazySingleton(() => Location());
-  final network = await Network.getInstance();
-  locator.registerSingleton(network);
+  locator.registerLazySingleton(() => Network(dio: Dio()));
 }

@@ -8,8 +8,10 @@
 
 import 'package:flutter/cupertino.dart';
 import 'package:stacked/stacked.dart';
+
 import '../views/location_view/location_view.dart';
 import '../views/weather/weather_page.dart';
+import '../views/weather/weather_page_viewmodel.dart';
 
 class Routes {
   static const String weatherPage = '/';
@@ -31,17 +33,21 @@ class StackedRouter extends RouterBase {
   Map<Type, StackedRouteFactory> get pagesMap => _pagesMap;
   final _pagesMap = <Type, StackedRouteFactory>{
     WeatherPage: (data) {
+      var args = data.getArgs<WeatherPageArguments>(
+        orElse: () => WeatherPageArguments(),
+      );
       return CupertinoPageRoute<dynamic>(
-        builder: (context) => const WeatherPage(),
+        builder: (context) => WeatherPage(key: args.key),
         settings: data,
       );
     },
     ForecastReport: (data) {
-      var args = data.getArgs<ForecastReportArguments>(
-        orElse: () => ForecastReportArguments(),
-      );
+      var args = data.getArgs<ForecastReportArguments>(nullOk: false);
       return CupertinoPageRoute<dynamic>(
-        builder: (context) => ForecastReport(key: args.key),
+        builder: (context) => ForecastReport(
+          key: args.key,
+          newmod: args.model,
+        ),
         settings: data,
       );
     },
@@ -52,8 +58,15 @@ class StackedRouter extends RouterBase {
 /// Arguments holder classes
 /// *************************************************************************
 
+/// WeatherPage arguments holder class
+class WeatherPageArguments {
+  final Key? key;
+  WeatherPageArguments({this.key});
+}
+
 /// ForecastReport arguments holder class
 class ForecastReportArguments {
   final Key? key;
-  ForecastReportArguments({this.key});
+  final WeatherPageViewmodel model;
+  ForecastReportArguments({this.key, required this.model});
 }

@@ -1,24 +1,30 @@
-class Daily {
-  Daily({
+import 'package:equatable/equatable.dart';
+
+class Daily extends Equatable {
+  const Daily({
     this.condition,
     this.dt,
-    required this.temp,
-   
+    this.temp,
   });
-  int? dt;
-  String temp;
-  
-  int? condition;
+  final int? dt;
+  final String? temp;
+
+  final int? condition;
+
+  @override
+
+  List<Object?> get props => [
+    temp, dt, condition 
+  ];
 
   factory Daily.fromJson(Map<String, dynamic> json) => Daily(
-      dt: json['dt'],
-      temp: json["temp"]["day"].toString(),
-      
-      condition: json["weather"][0]["id"],);
+        dt: json['dt'],
+        temp: json["temp"]["day"].toString(),
+        condition: json["weather"][0]["id"],
+      );
 
   Map<String, dynamic> toJson() => {
         "temp": temp,
-       
         "dt": dt,
         "condition": condition,
       };

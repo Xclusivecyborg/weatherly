@@ -1,10 +1,10 @@
 import 'package:stacked/stacked.dart';
 import 'package:stacked_services/stacked_services.dart';
-import 'package:weather_forecast/app/app.locator.dart';
 import 'package:weather_forecast/app/app.logger.dart';
 import 'package:intl/intl.dart';
 import 'package:weather_forecast/app/app.router.dart';
 import 'package:weather_forecast/models/get_weather_daily.dart';
+import 'package:weather_forecast/models/get_weather_hourly.dart';
 import 'package:weather_forecast/models/notifications_model.dart';
 import 'package:weather_forecast/services/get_current_location.dart';
 import 'package:weather_forecast/services/network.dart';
@@ -13,19 +13,23 @@ import 'package:weather_forecast/utils/app_strings.dart';
 class WeatherPageViewmodel extends FormViewModel {
   final log = getLogger('Location Weather');
 
+  WeatherPageViewmodel(
+      {required this.location, required this.navigation, required this.api});
+
   ///REGISTERED SERVICES
-  final location = locator<Location>();
-  final _navigation = locator<NavigationService>();
-  final _api = locator<Network>();
+  final Location location;
+  final NavigationService navigation;
+  final Network api;
 
   //Variables passed to the UI
   List<Daily>? datasnapshot = [];
-  List<dynamic>? hoursnapshots = [];
+  List<Hourly>? hoursnapshots = [];
   List<Notification>? notifications = [];
-  String cityname = '';
-  String city = '';
-  int temperature = 0;
-  String country = '';
+  String cityname = 'Loading';
+  String city = 'Loading';
+  String temperature = '';
+  String country = 'Loading';
+
   String? get time => formatDateTime();
   String? get date => formatDate();
   bool isCelsius = true;
@@ -66,10 +70,10 @@ class WeatherPageViewmodel extends FormViewModel {
   /// =======> Method to get weather for the city typed in by the user in celsius <=======
   Future getWeatherbyCityCelsius({required String name}) async {
     String url = '$baseUrl/weather?q=$name&appid=$apiKey&units=metric';
-    await _api.getCityWeather(url: url).then((value) {
+    await api.getCityWeather(url: url).then((value) {
       condition = value!.condition!;
       cityname = value.cityName!;
-      temperature = value.temp!.toInt();
+      temperature = value.temp!;
       country = value.country!;
       changeCityName(value.cityName);
       log.i(value);
@@ -82,10 +86,10 @@ class WeatherPageViewmodel extends FormViewModel {
   ///
   Future getWeatherbyCityFarenheit({required String name}) async {
     String url = '$baseUrl/weather?q=$name&appid=$apiKey&units=imperial';
-    await _api.getCityWeather(url: url).then((value) {
+    await api.getCityWeather(url: url).then((value) {
       condition = value!.condition!;
       cityname = value.cityName!;
-      temperature = value.temp!.toInt();
+      temperature = value.temp!;
       country = value.country!;
       changeCityName(value.cityName);
       log.i(value);
@@ -100,8 +104,8 @@ class WeatherPageViewmodel extends FormViewModel {
     await location.getCurrentLocation();
     String url =
         '$baseUrl/onecall?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric';
-     datasnapshot = await _api.getDailyData(url: url);
-        log.i(datasnapshot);
+    datasnapshot = await api.getDailyData(url: url);
+    log.i(datasnapshot);
     notifyListeners();
   }
 
@@ -111,10 +115,8 @@ class WeatherPageViewmodel extends FormViewModel {
     await location.getCurrentLocation();
     String url =
         '$baseUrl/onecall?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric';
-    await _api.getHourData(url: url).then((value) {
-      // hoursnapshots = value!.map((e) => Hourly.fromJson(e)).toList();
-      hoursnapshots = value;
-    });
+   hoursnapshots =  await api.getHourData(url: url); 
+    
     log.i(hoursnapshots!);
     notifyListeners();
   }
@@ -130,27 +132,16 @@ class WeatherPageViewmodel extends FormViewModel {
     notifyListeners();
   }
 
-  ///Method that switches between the API call for celcius and farenheit
-  ///for the city typed in by user
-  Future toggleLocation(bool val, String loc) async {
-    if (val == true) {
-      await getWeatherbyCityFarenheit(name: loc);
-    } else {
-      await getWeatherbyCityCelsius(name: loc);
-    }
-    notifyListeners();
-  }
-
   ///Method to get weather in farenheit
   ///
   Future getWeatherFarenheit() async {
     await location.getCurrentLocation();
     String url =
         '$baseUrl/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=imperial';
-    await _api.getCityWeather(url: url).then((value) {
+    await api.getCityWeather(url: url).then((value) {
       condition = value!.condition!;
       cityname = value.cityName!;
-      temperature = value.temp!.toInt();
+      temperature = value.temp!;
       country = value.country!;
       log.i(value);
     });
@@ -165,10 +156,10 @@ class WeatherPageViewmodel extends FormViewModel {
     String url =
         '$baseUrl/weather?lat=${location.latitude}&lon=${location.longitude}&appid=$apiKey&units=metric';
 
-    await _api.getCityWeather(url: url).then((value) {
+    await api.getCityWeather(url: url).then((value) {
       condition = value!.condition!;
       cityname = value.cityName!;
-      temperature = value.temp!.toInt();
+      temperature = value.temp!;
       country = value.country!;
       log.i(value);
     });
@@ -184,7 +175,7 @@ class WeatherPageViewmodel extends FormViewModel {
     for (var i = 0; i < 5; i++) {
       String url =
           '$baseUrl/onecall/timemachine?lat=${location.latitude}&lon=${location.longitude}&dt=$timestamp&appid=$apiKey&units=metric';
-      await _api.getNotifications(url: url).then((value) {
+      await api.getNotifications(url: url).then((value) {
         notifications!.add(value!);
       });
       log.i(notifications);
@@ -194,13 +185,13 @@ class WeatherPageViewmodel extends FormViewModel {
 
 ////NAVIGATION METHODS
   ///Navigate to page to get weather by city
-  void navigateToCity() {
-    _navigation.navigateTo(Routes.forecastReport);
+  Future navigateToCity() async {
+    navigation.navigateTo(Routes.forecastReport);
   }
 
 //Pop navigation
   void pop() {
-    _navigation.back();
+    navigation.back();
   }
 
 ////NOTIFICATION MESSAGES AND ICONS, CURRENT USER LOCATION ICONS

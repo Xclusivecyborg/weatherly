@@ -5,12 +5,12 @@ class Hourly {
     this.condition
   });
 
-  double? temp;
+  String? temp;
   int? dt;
   int? condition;
   factory Hourly.fromJson(Map<String, dynamic> json) => Hourly(
         dt: json["dt"],
-        temp: json["temp"],
+        temp: json["temp"].toString(),
        condition: json["weather"][0]["id"],
       );
 

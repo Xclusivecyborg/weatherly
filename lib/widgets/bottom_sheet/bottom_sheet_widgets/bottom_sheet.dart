@@ -12,9 +12,7 @@ class ForecastSheet extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      height: height ?? MediaQuery.of(context).size.height / 2,
-      color: AppColors.sheetPurple,
+    return SingleChildScrollView(
       child: Container(
         padding: const EdgeInsets.symmetric(vertical: 25, horizontal: 29),
         child: child ?? Container(),

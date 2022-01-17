@@ -6,14 +6,14 @@ class CustomSearchField extends StatelessWidget {
   final IconData? preixIcon;
   final Widget? suffixIcon;
   final String? hint;
-  final Function(String) onChanged;
+  final Function(String)? onChanged;
   final TextEditingController controller;
   const CustomSearchField({
     Key? key,
     @required this.hint,
     this.preixIcon,
     this.suffixIcon,
-    required this.onChanged,
+    this.onChanged,
     required this.controller,
   }) : super(key: key);
 

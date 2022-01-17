@@ -34,7 +34,7 @@ class Body extends StatelessWidget {
                   children: [
                     Row(
                       children: [
-                        navigator!,
+                        navigator ?? const SizedBox(),
                         Expanded(
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,

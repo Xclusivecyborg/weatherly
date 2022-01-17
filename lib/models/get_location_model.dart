@@ -1,17 +1,28 @@
-class LocationWeather {
-  final double? temp;
+import 'package:equatable/equatable.dart';
+
+class LocationWeather extends Equatable {
+  final String? temp;
   final String? cityName;
   final String? country;
   final int? condition;
 
-  LocationWeather({this.condition, this.country, this.temp, this.cityName});
+  @override
+  List<Object?> get props => [
+        temp,
+        cityName,
+        country,
+        condition,
+      ];
+
+  const LocationWeather(
+      {this.condition, this.country, this.temp, this.cityName});
 
   factory LocationWeather.fromJson(Map<String, dynamic> json) {
     return LocationWeather(
       cityName: json['name'],
-      temp: json['main']['temp'],
+      temp: json['main']['temp'].toString(),
       country: json['sys']['country'],
-      condition: json['weather'][0]['id']
+      condition: json['weather'][0]['id'],
     );
   }
 
@@ -20,7 +31,7 @@ class LocationWeather {
       "cityName": cityName,
       "temp": temp,
       "country": country,
-      "condition" : condition,
+      "condition": condition,
     };
   }
 
@@ -29,5 +40,3 @@ class LocationWeather {
     return 'temp : $temp, cityName: $cityName, country : $country, condition : $condition';
   }
 }
-
-
