@@ -7,7 +7,7 @@ class WeatherBox extends StatelessWidget {
   final String? time;
   final String? date;
   final String? weathericon;
-  final int? temp;
+  final String? temp;
   final String? location, country;
   final Function() doubleTap;
   final bool isCelsius;
